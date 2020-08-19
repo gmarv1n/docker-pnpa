@@ -6,8 +6,7 @@
 !logs/readme.txt
 
 /hosts/*
-!/hosts/simpleproject.conf
-!/hosts/symfonyexampleproject.conf
+!/hosts/readme.txt
 
 /postgres-data/*
 !/postgres-data/readme.txt
