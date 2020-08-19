@@ -1,0 +1,13 @@
+# Rules for saving directories
+/www/*
+!www/readme.txt
+
+/logs/*
+!logs/readme.txt
+
+/hosts/*
+!/hosts/simpleproject.conf
+!/hosts/symfonyexampleproject.conf
+
+/postgres-data/*
+!/postgres-data/readme.txt

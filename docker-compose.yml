@@ -1,0 +1,48 @@
+version: '2'
+services:
+    nginx:
+        image: nginx:latest
+        # ports LEFT -> HOST and RIGHT -> CONTAINER
+        ports:
+            - "8080:80"
+        # Mount dirs. LEFT ones are for HOST and RIGHT ones are for CONTAINERS
+        volumes:
+            - ./hosts:/etc/nginx/conf.d
+            - ./www:/var/www
+            - ./logs:/var/log/nginx
+        # nginx must communicate with php
+        links:
+            - php
+    php:
+        # Link to my unique php image setted via dockerfile
+        build: ./images/php
+        # php image will mess up with postgres
+        links:
+            - postgres
+        # mount directory with projects
+        volumes:
+            - ./www:/var/www
+        environment: 
+            - DB_CONNECTION=pgsql
+            - DB_PORT=3306
+            - DB_HOST=postgres
+    postgres:
+        image: postgres
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+        # env vars for postgres
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: secret
+    adminer:
+      # adminer is for GUI
+        image: adminer
+        restart: always
+        depends_on: 
+            - postgres
+        links:
+            - postgres:postgres
+        ports:
+            - 8183:8080
